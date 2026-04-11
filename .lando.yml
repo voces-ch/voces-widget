@@ -1,0 +1,14 @@
+name: voces-widget
+
+services:
+  appserver:
+    type: nginx
+    ssl: true
+    webroot: dist
+
+  builder:
+    type: node:24
+
+proxy:
+  appserver:
+    - widget.voces.lndo.site

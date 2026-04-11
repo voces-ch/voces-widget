@@ -6,9 +6,7 @@ import path from "path";
 import fs from "fs";
 
 export default defineConfig(({ mode }) => {
-  const env = loadEnv(mode, process.cwd(), "");
   const version = process.env.npm_package_version || "0.0.1";
-  const apiUrl = env.API_URL || "https://app.voces.ch";
   const widgetRoot = path.resolve(__dirname, "dist");
   const versionedPath = path.join(widgetRoot, version);
   const latestPath = path.join(widgetRoot, "latest");
@@ -54,17 +52,9 @@ export default defineConfig(({ mode }) => {
         },
       },
     ],
-    define: {
-      "import.meta.env.VITE_API_URL": JSON.stringify(`${env.API_URL}/api/v1`),
-      "import.meta.env.VITE_WIDGET_VERSION": JSON.stringify(version),
-    },
     server: {
       host: "0.0.0.0",
       port: 5173,
-      hmr: {
-        host: "widget.voces.lndo.site",
-        clientPort: 443,
-      },
     },
     esbuild: {
       drop: mode === "production" ? ["console", "debugger"] : [],

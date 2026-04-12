@@ -15,6 +15,7 @@ const loadAltchaScript = () => {
 };
 
 const initWidget = (config = {}) => {
+  console.log("Initializing Voces Widget with config:", config);
   const target = config.target || "#voces-widget";
   const el = document.querySelector(target);
 
@@ -29,15 +30,13 @@ const initWidget = (config = {}) => {
   const finalOrigin =
     urlParams.get("origin") || config.origin || window.location.hostname;
 
-  const apiUrl =
-    import.meta.env.VITE_API_URL || "https://app.voces.lndo.site/api/v1";
   const app = createApp(App, {
     campaignUuid: config.campaignUuid,
     source: finalSource,
     origin: finalOrigin,
     lang: config.lang || "de",
     theme: config.theme || "minimal",
-    apiUrl: apiUrl,
+    apiUrl: config.apiBaseUrl || "https://app.voces.ch/api/v1",
   });
 
   app.mount(el);

@@ -18,7 +18,7 @@ jobs:
       - name: Setup Node
         uses: actions/setup-node@v4
         with:
-          node-version: '25'
+          node-version: "25"
 
       - name: Install Dependencies
         run: npm install
@@ -26,14 +26,10 @@ jobs:
       - name: Build with Vite
         run: npm run build
 
-      - name: Prepare Versioned Folders
+      - name: Move Build to Release Directory
         # This creates your versioned structure (v1.0.0, latest, etc.)
         run: |
-          mkdir -p release_build/${{ github.event.release.tag_name }}
-          mv dist/* release_build/${{ github.event.release.tag_name }}/
-
-          mkdir -p release_build/latest
-          cp -r release_build/${{ github.event.release.tag_name }}/* release_build/latest/
+          mv dist/* ./release_build/
 
       - name: Push to CDN Branch
         uses: peaceiris/actions-gh-pages@v4

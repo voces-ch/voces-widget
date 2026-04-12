@@ -29,6 +29,7 @@ jobs:
       - name: Move Build to Release Directory
         # This creates your versioned structure (v1.0.0, latest, etc.)
         run: |
+          mkdir -p ./release_build
           mv dist/* ./release_build/
 
       - name: Push to CDN Branch

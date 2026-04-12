@@ -4,6 +4,7 @@ import { useTranslations } from "./composables/useTranslations";
 import { useCampaign } from "./composables/useCampaign";
 import ProgressBar from "./components/ProgressBar.vue";
 import { marked } from "marked";
+import "altcha";
 
 const props = defineProps({
   campaignUuid: { type: String, required: true },
@@ -168,9 +169,10 @@ const handleSubmit = async () => {
       </div>
 
       <div class="voces-field voces-altcha-wrapper">
-        <div class="w-fit rounded-md bg-white p-2 shadow-sm">
+        <div class="w-full max-w-[320px] rounded-md bg-white p-2 shadow-sm">
           <altcha-widget
-            :challengeurl="`${props.apiUrl}/auth/challenge`"
+            class="w-full"
+            :challenge="`${props.apiUrl}/auth/challenge`"
             :hidefooter="true"
             @statechange="handleAltchaChange"
           ></altcha-widget>

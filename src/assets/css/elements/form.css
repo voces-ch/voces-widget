@@ -8,7 +8,8 @@
   .voces-label,
   .voces-checkbox-label {
     p {
-      margin: 0;
+      line-height: unset !important;
+      margin: 0 !important;
     }
     a {
       color: inherit;
@@ -18,5 +19,9 @@
   }
   .voces-required {
     margin-left: 0 !important;
+  }
+
+  button[type="submit"] {
+    @apply cursor-pointer;
   }
 }

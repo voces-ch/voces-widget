@@ -34,6 +34,7 @@ const progressBarRef = ref(null);
 const isCaptchaSolved = ref(false);
 
 onMounted(async () => {
+  console.log(props.apiUrl);
   await fetchCampaign();
 });
 

@@ -1,6 +1,7 @@
 name: Deploy to jsDelivr CDN
 
 on:
+  workflow_dispatch:
   release:
     types: [published]
 
@@ -14,28 +15,61 @@ jobs:
     steps:
       - name: Checkout Code
         uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
 
       - name: Setup Node
         uses: actions/setup-node@v4
         with:
-          node-version: "25"
+          node-version: "22"
 
       - name: Install Dependencies
-        run: npm install
+        run: npm ci
 
       - name: Build with Vite
         run: npm run build
 
-      - name: Move Build to Release Directory
-        # This creates your versioned structure (v1.0.0, latest, etc.)
-        run: |
-          mkdir -p ./release_build
-          mv dist/* ./release_build/
+      - name: Resolve Version
+        id: version
+        run: echo "value=$(node -p \"require('./package.json').version\")" >> "$GITHUB_OUTPUT"
 
-      - name: Push to CDN Branch
-        uses: peaceiris/actions-gh-pages@v4
-        with:
-          github_token: ${{ secrets.GITHUB_TOKEN }}
-          publish_dir: ./release_build
-          publish_branch: cdn # Pushes to a clean branch called 'cdn'
-          keep_files: true # Never deletes your older versions!
+      - name: Publish Version and Latest to cdn branch
+        env:
+          VERSION: ${{ steps.version.outputs.value }}
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          set -euo pipefail
+
+          rm -rf cdn-worktree
+
+          if git ls-remote --exit-code --heads origin cdn >/dev/null 2>&1; then
+            git fetch origin cdn
+            git worktree add cdn-worktree origin/cdn
+          else
+            git worktree add --orphan cdn cdn-worktree
+            pushd cdn-worktree
+            git rm -rf . >/dev/null 2>&1 || true
+            popd
+          fi
+
+          mkdir -p "cdn-worktree/${VERSION}" "cdn-worktree/latest"
+
+          find "cdn-worktree/${VERSION}" -mindepth 1 -delete
+          find "cdn-worktree/latest" -mindepth 1 -delete
+          cp -R "dist/${VERSION}/." "cdn-worktree/${VERSION}/"
+          cp -R "dist/latest/." "cdn-worktree/latest/"
+
+          pushd cdn-worktree
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add -A
+
+          if git diff --cached --quiet; then
+            echo "No CDN changes to commit"
+          else
+            git commit -m "chore(cdn): publish ${VERSION}"
+            git push "https://x-access-token:${GITHUB_TOKEN}@github.com/${{ github.repository }}.git" HEAD:cdn
+          fi
+
+          popd
+          git worktree remove cdn-worktree --force

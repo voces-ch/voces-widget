@@ -11,7 +11,6 @@ const props = defineProps({
   origin: { type: String, default: null },
   lang: { type: String, default: "de" },
   theme: { type: String, default: "minimal" },
-  showProgress: { type: Boolean, default: false },
   apiUrl: { type: String, required: true },
 });
 
@@ -81,7 +80,7 @@ const handleSubmit = async () => {
 <template>
   <div class="voces-widget" :class="`voces-theme-${props.theme}`">
     <ProgressBar
-      v-if="props.showProgress && campaignData?.goal"
+      v-if="campaignData?.has_goal"
       ref="progressBarRef"
       :goal="campaignData.goal"
       :statistic="campaignData.goal_statistic"

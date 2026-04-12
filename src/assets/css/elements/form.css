@@ -1,19 +1,27 @@
 .voces-widget {
-    .voces-label {
-        display: flex !important;
-        column-gap: 0.25em;
-        flex-wrap: wrap;
-    }
+  .voces-label {
+    display: flex !important;
+    column-gap: 0.25em;
+    flex-wrap: wrap;
+  }
 
-    .voces-label,
-    .voces-checkbox-label {
-        a {
-            color: inherit;
-            text-decoration: underline;
-            font-weight: 500;
-        }
+  .voces-label,
+  .voces-checkbox-label {
+    p {
+      line-height: unset !important;
+      margin: 0 !important;
     }
-    .voces-required {
-        margin-left: 0 !important;
+    a {
+      color: inherit;
+      text-decoration: underline;
+      font-weight: 500;
     }
+  }
+  .voces-required {
+    margin-left: 0 !important;
+  }
+
+  button[type="submit"] {
+    @apply cursor-pointer;
+  }
 }

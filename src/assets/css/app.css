@@ -1,6 +1,4 @@
-@layer theme, base, components, utilities;
-@import "tailwindcss/theme.css" layer(theme);
-@import "tailwindcss/utilities.css" layer(utilities);
+@import "tailwindcss";
 @import "./elements/form.css";
 @import "./elements/progress-bar.css";
 @import "./themes/minimal.css";
@@ -10,16 +8,16 @@
 @import "./themes/neon.css";
 
 .voces-widget {
-    box-sizing: border-box;
-    font-family:
-        system-ui,
-        -apple-system,
-        sans-serif;
-    text-align: left;
+  box-sizing: border-box;
+  font-family:
+    system-ui,
+    -apple-system,
+    sans-serif;
+  text-align: left;
 }
 
 .voces-widget *,
 .voces-widget *::before,
 .voces-widget *::after {
-    box-sizing: inherit;
+  box-sizing: inherit;
 }

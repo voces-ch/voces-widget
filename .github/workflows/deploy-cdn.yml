@@ -31,7 +31,9 @@ jobs:
 
       - name: Resolve Version
         id: version
-        run: echo "value=$(node -p \"require('./package.json').version\")" >> "$GITHUB_OUTPUT"
+        run: |
+          VERSION=$(npm pkg get version | tr -d '"')
+          echo "value=${VERSION}" >> "$GITHUB_OUTPUT"
 
       - name: Publish Version and Latest to cdn branch
         env:

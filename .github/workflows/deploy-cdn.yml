@@ -1,0 +1,44 @@
+name: Deploy to jsDelivr CDN
+
+on:
+  release:
+    types: [published]
+
+permissions:
+  contents: write # Allows the action to push to the new cdn branch
+
+jobs:
+  deploy-cdn:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout Code
+        uses: actions/checkout@v4
+
+      - name: Setup Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: '25'
+
+      - name: Install Dependencies
+        run: npm install
+
+      - name: Build with Vite
+        run: npm run build
+
+      - name: Prepare Versioned Folders
+        # This creates your versioned structure (v1.0.0, latest, etc.)
+        run: |
+          mkdir -p release_build/${{ github.event.release.tag_name }}
+          mv dist/* release_build/${{ github.event.release.tag_name }}/
+
+          mkdir -p release_build/latest
+          cp -r release_build/${{ github.event.release.tag_name }}/* release_build/latest/
+
+      - name: Push to CDN Branch
+        uses: peaceiris/actions-gh-pages@v4
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          publish_dir: ./release_build
+          publish_branch: cdn # Pushes to a clean branch called 'cdn'
+          keep_files: true # Never deletes your older versions!

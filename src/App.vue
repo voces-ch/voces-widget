@@ -5,18 +5,22 @@ import { useCampaign } from "./composables/useCampaign";
 import ProgressBar from "./components/ProgressBar.vue";
 import { marked } from "marked";
 import "altcha";
+import "altcha/i18n/de";
+import "altcha/i18n/en";
+import "altcha/i18n/fr-fr";
+import "altcha/i18n/it";
 
 const props = defineProps({
   campaignUuid: { type: String, required: true },
   source: { type: String, default: null },
   origin: { type: String, default: null },
-  lang: { type: String, default: "de" },
+  locale: { type: String, default: "de" },
   theme: { type: String, default: "minimal" },
   apiUrl: { type: String, required: true },
 });
 
-const { lang } = toRefs(props);
-const { t } = useTranslations(lang);
+const { locale } = toRefs(props);
+const { t } = useTranslations(locale);
 
 const {
   campaignData,
@@ -173,7 +177,7 @@ const handleSubmit = async () => {
           <altcha-widget
             class="w-full"
             :challenge="`${props.apiUrl}/auth/challenge`"
-            :hidefooter="true"
+            :language="locale"
             @statechange="handleAltchaChange"
           ></altcha-widget>
         </div>

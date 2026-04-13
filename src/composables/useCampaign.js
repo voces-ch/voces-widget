@@ -14,7 +14,7 @@ export function useCampaign(props) {
   const fetchCampaign = async () => {
     const baseUrl = apiUrl.value;
     const response = await fetch(
-      `${baseUrl}/campaigns/${props.campaignUuid}?locale=${props.lang}&source=${props.source}`,
+      `${baseUrl}/campaigns/${props.campaignUuid}?locale=${props.locale}&source=${props.source}`,
     );
     const json = await response.json();
     campaignData.value = json.data;
@@ -46,7 +46,7 @@ export function useCampaign(props) {
     try {
       const baseUrl = apiUrl.value;
       const response = await fetch(
-        `${baseUrl}/campaigns/${props.campaignUuid}/signatures?locale=${props.lang}`,
+        `${baseUrl}/campaigns/${props.campaignUuid}/signatures?locale=${props.locale}`,
         {
           method: "POST",
           headers: {

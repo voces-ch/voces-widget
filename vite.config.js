@@ -57,7 +57,7 @@ export default defineConfig(({ mode }) => {
       port: 5174,
     },
     esbuild: {
-      drop: mode === "production" ? ["console", "debugger"] : [],
+      drop: ["console", "debugger"],
     },
     build: {
       outDir: versionedPath,

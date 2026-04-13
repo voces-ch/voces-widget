@@ -64,7 +64,7 @@ const initWidget = (config = {}) => {
     campaignUuid: config.campaignUuid,
     source: finalSource,
     origin: finalOrigin,
-    lang: config.lang || "de",
+    locale: config.locale || "de",
     theme: config.theme || "minimal",
     apiUrl: config.apiBaseUrl || "https://app.voces.ch/api/v1",
   });
